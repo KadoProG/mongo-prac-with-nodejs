@@ -7,3 +7,5 @@ docker-compose ファイルを使用して、mongoDB を立ち上げ、nodejs �
 `docker-compose up --build -d`
 
 以降は docker デスクトップで制御可能
+
+- init.jsがまだ正常に実行されていないため、もう一度試してみたい
