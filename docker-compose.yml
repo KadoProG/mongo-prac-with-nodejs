@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+    backend:
+        image: "node"
+        volumes:
+            - "./backend:/var/www/html"
+        working_dir: "/var/www/html"
+        environment:
+            PORT: ${BACKEND_PORT}
+            FRONTEND_URL: ${FRONTEND_URL}
+            MONGO_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin
+
+        ports:
+            - "3001:3001"
+        command: bash -c "npm install && npm run dev"
+        depends_on:
+            - mongo
+
+    mongo:
+        image: mongo:latest
+        container_name: mongodb
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo-data:/data/db
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+        env_file:
+            - .env
+
+volumes:
+    mongo-data:
