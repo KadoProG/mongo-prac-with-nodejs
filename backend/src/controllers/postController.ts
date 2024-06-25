@@ -6,12 +6,34 @@ const url = `${process.env.MONGO_URL}`;
 const client = new MongoClient(url, {});
 
 export const postGet = async (req: Request, res: Response) => {
+  const { page, perPage } = req.query;
+
+  const pageNumber = Number(page) || 1;
+  const perPageNumber = Number(perPage) || undefined;
+  const skip = perPageNumber ? (pageNumber - 1) * perPageNumber : undefined;
+
   try {
     await client.connect();
     const database = client.db(process.env.MONGO_DB);
     const collection = database.collection('karaokeScores');
-    const documents = await collection.find({}).toArray();
-    res.status(200).json(documents);
+
+    const query = {};
+
+    const findCursor = collection.find(query);
+    const findCursorWithSkip = skip ? findCursor.skip(skip) : findCursor;
+    const findCursorWithLimit = perPageNumber
+      ? findCursorWithSkip.limit(perPageNumber)
+      : findCursorWithSkip;
+    const documents = await findCursorWithLimit.toArray();
+    const total = await collection.countDocuments(query);
+    res.status(200).json({
+      list: documents,
+      meta: {
+        currentPage: pageNumber,
+        perPage: perPageNumber,
+        total,
+      },
+    });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({ error: err.toString() });
