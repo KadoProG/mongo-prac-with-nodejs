@@ -9,7 +9,7 @@ export const postGet = async (req: Request, res: Response) => {
   try {
     await client.connect();
     const database = client.db(process.env.MONGO_DB);
-    const collection = database.collection('mycollection');
+    const collection = database.collection('karaokeScores');
     const documents = await collection.find({}).toArray();
     res.status(200).json(documents);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +24,7 @@ export const postPost = async (req: Request, res: Response) => {
   try {
     await client.connect();
     const database = client.db(process.env.MONGO_DB);
-    const collection = database.collection('mycollection');
+    const collection = database.collection('karaokeScores');
     const result = await collection.insertOne({ name: 'Hello', age: 12 });
     res.status(200).json(result);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +42,7 @@ export const postDelete = async (req: Request, res: Response) => {
 
     await client.connect();
     const database = client.db(process.env.MONGO_DB);
-    const collection = database.collection('mycollection');
+    const collection = database.collection('karaokeScores');
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
     // const result = await collection.findOneAndDelete({ _id: new ObjectId(id) });
 
