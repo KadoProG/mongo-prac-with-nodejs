@@ -55,7 +55,7 @@ export const fetchDamSiteList = async (options: {
 
     resultList.push(...list);
 
-    if (pageNo === maxPageNo) break;
+    if (pageNo >= maxPageNo) break;
 
     const scoringAiIds = list.map((data) => data.scoringAiId);
     remainingScoringAiIds = remainingScoringAiIds.filter((id) => scoringAiIds.includes(id));
