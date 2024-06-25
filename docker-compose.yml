@@ -10,6 +10,7 @@ services:
             PORT: ${BACKEND_PORT}
             FRONTEND_URL: ${FRONTEND_URL}
             MONGO_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin
+            CDM_CARD_NO: ${CDM_CARD_NO}
 
         ports:
             - "3001:3001"
