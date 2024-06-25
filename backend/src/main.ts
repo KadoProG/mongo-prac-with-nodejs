@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { postDelete, postGet, postPost } from './controllers/postController';
+import { damSitePost } from './controllers/damSiteController';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', postGet);
 app.post('/post', postPost);
 app.delete('/post/:id', postDelete);
+app.post('/dam-site', damSitePost);
 
 try {
   app.listen(appPort, () => {

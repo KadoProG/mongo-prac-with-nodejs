@@ -79,7 +79,7 @@ paths:
       responses:
         "204":
           description: A song is deleted
-  /damSite:
+  /dam-site:
     post:
       summary: DAM★トモの情報を取得する
       description: DAM★トモの情報を取得し、MongoDBに保存します。<br />
