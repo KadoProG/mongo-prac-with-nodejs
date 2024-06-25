@@ -1,0 +1,138 @@
+openapi: 3.0.2
+info:
+  title: Karaoke API with MongoDB
+  version: 1.0.0
+  description: カラオケAPIを取得するためのAPI、MongoDBを使用しています。
+servers:
+  - url: http://localhost:3001
+    description: Local server
+paths:
+  /karaoke:
+    get:
+      summary: カラオケ採点データのリストを取得する
+      description: 保存されたカラオケ採点データのリストを取得します。MongoDBを使用しています。
+      tags:
+        - karaoke
+      parameters:
+        - in: query
+          name: perPage
+          schema:
+            type: number
+          description: 1ページあたりの表示数
+          example: 20
+        - in: query
+          name: artist
+          schema:
+            type: string
+          description: アーティスト名
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: ページ番号
+          example: 1
+      responses:
+        "200":
+          description: A list of songs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Scores"
+    post:
+      summary: カラオケの採点データを追加する
+      description: カラオケの採点データを追加します。MongoDBを使用しています。
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Scores"
+      responses:
+        "201":
+          description: A new song is added
+  /karaoke/{id}:
+    patch:
+      summary: カラオケの採点データを更新する
+      description: カラオケの採点データを更新します。MongoDBを使用しています。
+      tags:
+        - karaoke
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Scores"
+      responses:
+        "200":
+          description: A song is updated
+    delete:
+      summary: カラオケの採点データを削除する
+      description: カラオケの採点データを削除します。MongoDBを使用しています。
+      tags:
+        - karaoke
+      responses:
+        "204":
+          description: A song is deleted
+  /damSite:
+    post:
+      summary: DAM★トモの情報を取得する
+      description: DAM★トモの情報を取得し、MongoDBに保存します。<br />
+        プロパティを指定しない場合、全ての曲の情報を取得し、リストを保存します。最大直近200件まで取得できます。<br />
+        minPage, maxPageを指定すると、指定したページの曲の情報を取得し保存します。<br />
+        200件を超す場合、scoringAiIdsを指定すると、指定した曲の情報のみを取得し保存します。
+      tags:
+        - damSite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                minPage:
+                  type: number
+                  example: 1
+                maxPage:
+                  type: number
+                  example: 40
+                scoringAiIds:
+                  type: array
+                  items:
+                    type: number
+                    example: 1413882
+      responses:
+        "200":
+          description: 保存した曲のメタ情報を返す
+
+components:
+  schemas:
+    Scores:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: MongoDBのID
+        title:
+          type: string
+          description: 曲名
+          example: 世界が終わるまでは…
+        artist:
+          type: string
+          description: アーティスト名
+          example: WANDS
+        score:
+          type: number
+          description: スコア
+          example: 100
+
+tags:
+  - name: karaoke
+    description: カラオケ採点データを取得するためのAPI
+  - name: damSite
+    description: DAM★トモの情報を取得してmonboDBに保存するためのAPI
