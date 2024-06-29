@@ -16,6 +16,13 @@ import { convertDataDamDxgFields } from './convertDataDamDxgFields';
  * - 精密採点DX-G
  *
  * に対応しています。部分的にオブジェクトや配列に変換しています。
+ *
+ * 既存で来そうなプロパティはconvertDataDamCommonFields（scores直下）に、
+ * 精密採点Aiに関するプロパティはconvertDataDamAiFields（scores.aiオブジェクト）に、
+ * 精密採点DX-Gに関するプロパティはconvertDataDamDxgFields（scores.dxgオブジェクト）に分割しています。
+ *
+ * その他のプロパティはotherに格納しています。
+ *
  * @param data 変換前のデータ
  * @returns 変換後のデータ
  */
