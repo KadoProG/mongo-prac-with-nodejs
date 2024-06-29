@@ -5,6 +5,8 @@
  */
 
 import { IMeta } from '../const';
+import { convertDataDamAiFields } from './convertDataDamAiFields';
+import { convertDataDamDxgFields } from './convertDataDamDxgFields';
 
 /**
  * ### DAMデータを変換する関数です
@@ -101,183 +103,30 @@ export const convertDamScores = (data: any) =>
         scoreDetail.intervalGraphIndexSection24,
       ],
       intervalGraphPointsSection: [
-        scoreDetail.intervalGraphPointsSection01,
-        scoreDetail.intervalGraphPointsSection02,
-        scoreDetail.intervalGraphPointsSection03,
-        scoreDetail.intervalGraphPointsSection04,
-        scoreDetail.intervalGraphPointsSection05,
-        scoreDetail.intervalGraphPointsSection06,
-        scoreDetail.intervalGraphPointsSection07,
-        scoreDetail.intervalGraphPointsSection08,
-        scoreDetail.intervalGraphPointsSection09,
-        scoreDetail.intervalGraphPointsSection10,
-        scoreDetail.intervalGraphPointsSection11,
-        scoreDetail.intervalGraphPointsSection12,
-        scoreDetail.intervalGraphPointsSection13,
-        scoreDetail.intervalGraphPointsSection14,
-        scoreDetail.intervalGraphPointsSection15,
-        scoreDetail.intervalGraphPointsSection16,
-        scoreDetail.intervalGraphPointsSection17,
-        scoreDetail.intervalGraphPointsSection18,
-        scoreDetail.intervalGraphPointsSection19,
-        scoreDetail.intervalGraphPointsSection20,
-        scoreDetail.intervalGraphPointsSection21,
-        scoreDetail.intervalGraphPointsSection22,
-        scoreDetail.intervalGraphPointsSection23,
-        scoreDetail.intervalGraphPointsSection24,
-      ],
-    };
-
-    // AI known fields
-    const aiFields = {
-      scoringAiId: scoreDetail.scoringAiId,
-      accentCount: scoreDetail.accentCount,
-      aiSensitivityBonus: scoreDetail.aiSensitivityBonus,
-      aiSensitivityMeterAdd: scoreDetail.aiSensitivityMeterAdd,
-      aiSensitivityMeterDeduct: scoreDetail.aiSensitivityMeterDeduct,
-      aiSensitivityPoints: scoreDetail.aiSensitivityPoints,
-      edgeVoiceCount: scoreDetail.edgeVoiceCount,
-      fadeout: scoreDetail.fadeout,
-      maxTotalPoints: scoreDetail.maxTotalPoints,
-      spare1: scoreDetail.spare1,
-      spare2: scoreDetail.spare2,
-      aiSensitivityGraphAddPoints: [
-        scoreDetail.aiSensitivityGraphAddPointsSection01,
-        scoreDetail.aiSensitivityGraphAddPointsSection02,
-        scoreDetail.aiSensitivityGraphAddPointsSection03,
-        scoreDetail.aiSensitivityGraphAddPointsSection04,
-        scoreDetail.aiSensitivityGraphAddPointsSection05,
-        scoreDetail.aiSensitivityGraphAddPointsSection06,
-        scoreDetail.aiSensitivityGraphAddPointsSection07,
-        scoreDetail.aiSensitivityGraphAddPointsSection08,
-        scoreDetail.aiSensitivityGraphAddPointsSection09,
-        scoreDetail.aiSensitivityGraphAddPointsSection10,
-        scoreDetail.aiSensitivityGraphAddPointsSection11,
-        scoreDetail.aiSensitivityGraphAddPointsSection12,
-        scoreDetail.aiSensitivityGraphAddPointsSection13,
-        scoreDetail.aiSensitivityGraphAddPointsSection14,
-        scoreDetail.aiSensitivityGraphAddPointsSection15,
-        scoreDetail.aiSensitivityGraphAddPointsSection16,
-        scoreDetail.aiSensitivityGraphAddPointsSection17,
-        scoreDetail.aiSensitivityGraphAddPointsSection18,
-        scoreDetail.aiSensitivityGraphAddPointsSection19,
-        scoreDetail.aiSensitivityGraphAddPointsSection20,
-        scoreDetail.aiSensitivityGraphAddPointsSection21,
-        scoreDetail.aiSensitivityGraphAddPointsSection22,
-        scoreDetail.aiSensitivityGraphAddPointsSection23,
-        scoreDetail.aiSensitivityGraphAddPointsSection24,
-      ],
-      aiSensitivityGraphDeductPoints: [
-        scoreDetail.aiSensitivityGraphDeductPointsSection01,
-        scoreDetail.aiSensitivityGraphDeductPointsSection02,
-        scoreDetail.aiSensitivityGraphDeductPointsSection03,
-        scoreDetail.aiSensitivityGraphDeductPointsSection04,
-        scoreDetail.aiSensitivityGraphDeductPointsSection05,
-        scoreDetail.aiSensitivityGraphDeductPointsSection06,
-        scoreDetail.aiSensitivityGraphDeductPointsSection07,
-        scoreDetail.aiSensitivityGraphDeductPointsSection08,
-        scoreDetail.aiSensitivityGraphDeductPointsSection09,
-        scoreDetail.aiSensitivityGraphDeductPointsSection10,
-        scoreDetail.aiSensitivityGraphDeductPointsSection11,
-        scoreDetail.aiSensitivityGraphDeductPointsSection12,
-        scoreDetail.aiSensitivityGraphDeductPointsSection13,
-        scoreDetail.aiSensitivityGraphDeductPointsSection14,
-        scoreDetail.aiSensitivityGraphDeductPointsSection15,
-        scoreDetail.aiSensitivityGraphDeductPointsSection16,
-        scoreDetail.aiSensitivityGraphDeductPointsSection17,
-        scoreDetail.aiSensitivityGraphDeductPointsSection18,
-        scoreDetail.aiSensitivityGraphDeductPointsSection19,
-        scoreDetail.aiSensitivityGraphDeductPointsSection20,
-        scoreDetail.aiSensitivityGraphDeductPointsSection21,
-        scoreDetail.aiSensitivityGraphDeductPointsSection22,
-        scoreDetail.aiSensitivityGraphDeductPointsSection23,
-        scoreDetail.aiSensitivityGraphDeductPointsSection24,
-      ],
-      aiSensitivityGraphIndex: [
-        scoreDetail.aiSensitivityGraphIndexSection01,
-        scoreDetail.aiSensitivityGraphIndexSection02,
-        scoreDetail.aiSensitivityGraphIndexSection03,
-        scoreDetail.aiSensitivityGraphIndexSection04,
-        scoreDetail.aiSensitivityGraphIndexSection05,
-        scoreDetail.aiSensitivityGraphIndexSection06,
-        scoreDetail.aiSensitivityGraphIndexSection07,
-        scoreDetail.aiSensitivityGraphIndexSection08,
-        scoreDetail.aiSensitivityGraphIndexSection09,
-        scoreDetail.aiSensitivityGraphIndexSection10,
-        scoreDetail.aiSensitivityGraphIndexSection11,
-        scoreDetail.aiSensitivityGraphIndexSection12,
-        scoreDetail.aiSensitivityGraphIndexSection13,
-        scoreDetail.aiSensitivityGraphIndexSection14,
-        scoreDetail.aiSensitivityGraphIndexSection15,
-        scoreDetail.aiSensitivityGraphIndexSection16,
-        scoreDetail.aiSensitivityGraphIndexSection17,
-        scoreDetail.aiSensitivityGraphIndexSection18,
-        scoreDetail.aiSensitivityGraphIndexSection19,
-        scoreDetail.aiSensitivityGraphIndexSection20,
-        scoreDetail.aiSensitivityGraphIndexSection21,
-        scoreDetail.aiSensitivityGraphIndexSection22,
-        scoreDetail.aiSensitivityGraphIndexSection23,
-        scoreDetail.aiSensitivityGraphIndexSection24,
-      ],
-    };
-
-    // DXG known fields
-    const dxgFields = {
-      scoringDxgId: scoreDetail.scoringDxgId,
-      lastTotalPoints: scoreDetail.lastTotalPoints,
-      bonusType: scoreDetail.bonusType,
-      bonusPoint: scoreDetail.bonusPoint,
-      expressionGraphPointsSection: [
-        scoreDetail.expressionGraphPointsSection01,
-        scoreDetail.expressionGraphPointsSection02,
-        scoreDetail.expressionGraphPointsSection03,
-        scoreDetail.expressionGraphPointsSection04,
-        scoreDetail.expressionGraphPointsSection05,
-        scoreDetail.expressionGraphPointsSection06,
-        scoreDetail.expressionGraphPointsSection07,
-        scoreDetail.expressionGraphPointsSection08,
-        scoreDetail.expressionGraphPointsSection09,
-        scoreDetail.expressionGraphPointsSection10,
-        scoreDetail.expressionGraphPointsSection11,
-        scoreDetail.expressionGraphPointsSection12,
-        scoreDetail.expressionGraphPointsSection13,
-        scoreDetail.expressionGraphPointsSection14,
-        scoreDetail.expressionGraphPointsSection15,
-        scoreDetail.expressionGraphPointsSection16,
-        scoreDetail.expressionGraphPointsSection17,
-        scoreDetail.expressionGraphPointsSection18,
-        scoreDetail.expressionGraphPointsSection19,
-        scoreDetail.expressionGraphPointsSection20,
-        scoreDetail.expressionGraphPointsSection21,
-        scoreDetail.expressionGraphPointsSection22,
-        scoreDetail.expressionGraphPointsSection23,
-        scoreDetail.expressionGraphPointsSection24,
-      ],
-      expressionGraphIndexSection: [
-        scoreDetail.expressionGraphIndexSection01,
-        scoreDetail.expressionGraphIndexSection02,
-        scoreDetail.expressionGraphIndexSection03,
-        scoreDetail.expressionGraphIndexSection04,
-        scoreDetail.expressionGraphIndexSection05,
-        scoreDetail.expressionGraphIndexSection06,
-        scoreDetail.expressionGraphIndexSection07,
-        scoreDetail.expressionGraphIndexSection08,
-        scoreDetail.expressionGraphIndexSection09,
-        scoreDetail.expressionGraphIndexSection10,
-        scoreDetail.expressionGraphIndexSection11,
-        scoreDetail.expressionGraphIndexSection12,
-        scoreDetail.expressionGraphIndexSection13,
-        scoreDetail.expressionGraphIndexSection14,
-        scoreDetail.expressionGraphIndexSection15,
-        scoreDetail.expressionGraphIndexSection16,
-        scoreDetail.expressionGraphIndexSection17,
-        scoreDetail.expressionGraphIndexSection18,
-        scoreDetail.expressionGraphIndexSection19,
-        scoreDetail.expressionGraphIndexSection20,
-        scoreDetail.expressionGraphIndexSection21,
-        scoreDetail.expressionGraphIndexSection22,
-        scoreDetail.expressionGraphIndexSection23,
-        scoreDetail.expressionGraphIndexSection24,
+        Number(scoreDetail.intervalGraphPointsSection01),
+        Number(scoreDetail.intervalGraphPointsSection02),
+        Number(scoreDetail.intervalGraphPointsSection03),
+        Number(scoreDetail.intervalGraphPointsSection04),
+        Number(scoreDetail.intervalGraphPointsSection05),
+        Number(scoreDetail.intervalGraphPointsSection06),
+        Number(scoreDetail.intervalGraphPointsSection07),
+        Number(scoreDetail.intervalGraphPointsSection08),
+        Number(scoreDetail.intervalGraphPointsSection09),
+        Number(scoreDetail.intervalGraphPointsSection10),
+        Number(scoreDetail.intervalGraphPointsSection11),
+        Number(scoreDetail.intervalGraphPointsSection12),
+        Number(scoreDetail.intervalGraphPointsSection13),
+        Number(scoreDetail.intervalGraphPointsSection14),
+        Number(scoreDetail.intervalGraphPointsSection15),
+        Number(scoreDetail.intervalGraphPointsSection16),
+        Number(scoreDetail.intervalGraphPointsSection17),
+        Number(scoreDetail.intervalGraphPointsSection18),
+        Number(scoreDetail.intervalGraphPointsSection19),
+        Number(scoreDetail.intervalGraphPointsSection20),
+        Number(scoreDetail.intervalGraphPointsSection21),
+        Number(scoreDetail.intervalGraphPointsSection22),
+        Number(scoreDetail.intervalGraphPointsSection23),
+        Number(scoreDetail.intervalGraphPointsSection24),
       ],
     };
 
@@ -286,8 +135,8 @@ export const convertDamScores = (data: any) =>
 
     // Known keys
     const knownKeys = Object.keys(knownFields)
-      .concat(Object.keys(aiFields))
-      .concat(Object.keys(dxgFields))
+      .concat(Object.keys(convertDataDamAiFields('')))
+      .concat(Object.keys(convertDataDamDxgFields('')))
       .concat(
         // eslint-disable-next-line
         Array.from({ length: 24 }, (_, i) => [
@@ -323,11 +172,13 @@ export const convertDamScores = (data: any) =>
     };
 
     if (scoreDetail.scoringAiId) {
-      result.ai = aiFields;
+      result.ai = convertDataDamAiFields(scoreDetail);
+      result.scoringAiId = scoreDetail.scoringAiId;
     }
 
     if (scoreDetail.scoringDxgId) {
-      result.dxg = dxgFields;
+      result.dxg = convertDataDamDxgFields(scoreDetail);
+      result.scoringDxgId = scoreDetail.scoringDxgId;
     }
 
     return result;

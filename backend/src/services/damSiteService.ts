@@ -48,6 +48,7 @@ export const fetchDamSiteList = async (options: {
   // まずはページ数を指定して取得
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    console.log(`pageNo: ${pageNo}のデータを取得します`); // eslint-disable-line no-console
     // eslint-disable-next-line no-await-in-loop
     const { list } = await fetchDamSite({ pageNo });
 
@@ -57,7 +58,7 @@ export const fetchDamSiteList = async (options: {
 
     if (pageNo >= maxPageNo) break;
 
-    const scoringAiIds = list.map((data) => data.scoringAiId);
+    const scoringAiIds = list.map((data) => Number(data.scoringAiId));
     remainingScoringAiIds = remainingScoringAiIds.filter((id) => scoringAiIds.includes(id));
 
     if (currentMaxDamScoringAiId && scoringAiIds.includes(currentMaxDamScoringAiId)) break;
@@ -68,6 +69,7 @@ export const fetchDamSiteList = async (options: {
   // 残りのAiデータを取得
   await Promise.all(
     remainingScoringAiIds.map(async (scoringAiId) => {
+      console.log(`scoringAiId: ${scoringAiId}のデータを取得します`); // eslint-disable-line no-console
       const { list } = await fetchDamSite({ scoringAiId });
       resultList.push(...list);
     })
