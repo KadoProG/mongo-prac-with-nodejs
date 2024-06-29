@@ -17,7 +17,7 @@ import { IMeta } from '../const';
  * @returns 変換後のデータ
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const convertDamAiSummary = (data: any) =>
+export const convertDamScores = (data: any) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data.document.list[0].data.map((d: any) => {
     const scoring = d.scoring[0];

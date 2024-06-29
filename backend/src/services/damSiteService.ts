@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { convertXmlToJson } from '../utils/convertXmlToJson';
-import { convertDamAiSummary, convertMeta } from '../utils/convertData';
+import { convertDamScores, convertMeta } from '../utils/convertData';
 import { IMeta } from '../const';
 
 const cdmCardNo = process.env.CDM_CARD_NO;
@@ -23,7 +23,7 @@ export const fetchDamSite = async (
 
     const data = response.data;
     const resultJson = await convertXmlToJson(data);
-    const list = convertDamAiSummary(resultJson);
+    const list = convertDamScores(resultJson);
 
     const meta = convertMeta(resultJson);
     return { list, meta };
