@@ -1,6 +1,9 @@
 /**
  * 共通データを変換する関数
  */
+
+import { convertDamDate } from './convertDamDate';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const convertDataDamCommonFields = (scoreDetail: any) => ({
   contentsName: scoreDetail.contentsName,
@@ -34,7 +37,7 @@ export const convertDataDamCommonFields = (scoreDetail: any) => ({
   requestNo: scoreDetail.requestNo,
   requestNoChapter: scoreDetail.requestNoChapter,
   requestNoTray: scoreDetail.requestNoTray,
-  scoringDateTime: scoreDetail.scoringDateTime,
+  scoringDateTime: convertDamDate(scoreDetail.scoringDateTime),
   scoringEngineVersionNumber: scoreDetail.scoringEngineVersionNumber,
   shakuriCount: scoreDetail.shakuriCount,
   singingRangeHighest: scoreDetail.singingRangeHighest,

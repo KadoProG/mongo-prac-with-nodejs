@@ -37,9 +37,9 @@ export const convertDamScores = (data: any) =>
     const allKeys = Object.keys(scoreDetail);
 
     // 既存のキーを取得
-    const knownKeys = Object.keys(convertDataDamCommonFields(''))
-      .concat(Object.keys(convertDataDamAiFields('')))
-      .concat(Object.keys(convertDataDamDxgFields('')))
+    const knownKeys = Object.keys(convertDataDamCommonFields(scoreDetail))
+      .concat(Object.keys(convertDataDamAiFields(scoreDetail)))
+      .concat(Object.keys(convertDataDamDxgFields(scoreDetail)))
       .concat(
         // eslint-disable-next-line
         Array.from({ length: 24 }, (_, i) => [

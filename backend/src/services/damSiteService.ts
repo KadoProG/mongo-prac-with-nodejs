@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { convertXmlToJson } from '../utils/convertXmlToJson';
-import { convertDamScores, convertMeta } from '../utils/convertData';
 import { IMeta } from '../const';
+import { convertDamScores, convertMeta } from '../utils/convertDamScores';
 
 const cdmCardNo = process.env.CDM_CARD_NO;
 
