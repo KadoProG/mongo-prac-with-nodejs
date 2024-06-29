@@ -6,10 +6,11 @@
 
 import { IMeta } from '../const';
 import { convertDataDamAiFields } from './convertDataDamAiFields';
+import { convertDataDamCommonFields } from './convertDataDamCommonFields';
 import { convertDataDamDxgFields } from './convertDataDamDxgFields';
 
 /**
- * ### DAMデータを変換する関数です
+ * ### DAMデータを変換する関数
  *
  * - 精密採点Ai
  * - 精密採点DX-G
@@ -25,116 +26,11 @@ export const convertDamScores = (data: any) =>
     const scoring = d.scoring[0];
     const scoreDetail = scoring.$;
 
-    // Common known fields
-    const knownFields: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      [key: string]: any;
-    } = {
-      contentsName: scoreDetail.contentsName,
-      dContentsName: scoreDetail.dContentsName,
-      artistName: scoreDetail.artistName,
-      dArtistName: scoreDetail.dArtistName,
-      damserial: scoreDetail.damserial,
-      dataKind: scoreDetail.dataKind,
-      dataSize: scoreDetail.dataSize,
-      entryCount: scoreDetail.entryCount,
-      fallCount: scoreDetail.fallCount,
-      edyId: scoreDetail.edyId,
-      favorite: scoreDetail.favorite,
-      hammeringOnCount: scoreDetail.hammeringOnCount,
-      hiccupCount: scoreDetail.hiccupCount,
-      intonation: scoreDetail.intonation,
-      kobushiCount: scoreDetail.kobushiCount,
-      lastPerformKey: scoreDetail.lastPerformKey,
-      longtoneSkill: scoreDetail.longtoneSkill,
-      nationalAverageExpression: scoreDetail.nationalAverageExpression,
-      nationalAveragePitch: scoreDetail.nationalAveragePitch,
-      nationalAverageRhythm: scoreDetail.nationalAverageRhythm,
-      nationalAverageStability: scoreDetail.nationalAverageStability,
-      nationalAverageTotalPoints: scoreDetail.nationalAverageTotalPoints,
-      nationalAverageVibratoAndLongtone: scoreDetail.nationalAverageVibratoAndLongtone,
-      radarChartExpressive: scoreDetail.radarChartExpressive,
-      radarChartPitch: scoreDetail.radarChartPitch,
-      radarChartRhythm: scoreDetail.radarChartRhythm,
-      radarChartStability: scoreDetail.radarChartStability,
-      radarChartVibratoLongtone: scoreDetail.radarChartVibratoLongtone,
-      requestNo: scoreDetail.requestNo,
-      requestNoChapter: scoreDetail.requestNoChapter,
-      requestNoTray: scoreDetail.requestNoTray,
-      scoringDateTime: scoreDetail.scoringDateTime,
-      scoringEngineVersionNumber: scoreDetail.scoringEngineVersionNumber,
-      shakuriCount: scoreDetail.shakuriCount,
-      singingRangeHighest: scoreDetail.singingRangeHighest,
-      singingRangeLowest: scoreDetail.singingRangeLowest,
-      timing: scoreDetail.timing,
-      topRecordNumber: scoreDetail.topRecordNumber,
-      vibratoCount: scoreDetail.vibratoCount,
-      vibratoType: scoreDetail.vibratoType,
-      vibratoSkill: scoreDetail.vibratoSkill,
-      vibratoTotalSecond: scoreDetail.vibratoTotalSecond,
-      vocalRangeHighest: scoreDetail.vocalRangeHighest,
-      vocalRangeLowest: scoreDetail.vocalRangeLowest,
-      analysisReportCommentNo: scoreDetail.analysisReportCommentNo,
-      clubDamCardNo: scoreDetail.clubDamCardNo,
-      intervalGraphIndexSection: [
-        scoreDetail.intervalGraphIndexSection01,
-        scoreDetail.intervalGraphIndexSection02,
-        scoreDetail.intervalGraphIndexSection03,
-        scoreDetail.intervalGraphIndexSection04,
-        scoreDetail.intervalGraphIndexSection05,
-        scoreDetail.intervalGraphIndexSection06,
-        scoreDetail.intervalGraphIndexSection07,
-        scoreDetail.intervalGraphIndexSection08,
-        scoreDetail.intervalGraphIndexSection09,
-        scoreDetail.intervalGraphIndexSection10,
-        scoreDetail.intervalGraphIndexSection11,
-        scoreDetail.intervalGraphIndexSection12,
-        scoreDetail.intervalGraphIndexSection13,
-        scoreDetail.intervalGraphIndexSection14,
-        scoreDetail.intervalGraphIndexSection15,
-        scoreDetail.intervalGraphIndexSection16,
-        scoreDetail.intervalGraphIndexSection17,
-        scoreDetail.intervalGraphIndexSection18,
-        scoreDetail.intervalGraphIndexSection19,
-        scoreDetail.intervalGraphIndexSection20,
-        scoreDetail.intervalGraphIndexSection21,
-        scoreDetail.intervalGraphIndexSection22,
-        scoreDetail.intervalGraphIndexSection23,
-        scoreDetail.intervalGraphIndexSection24,
-      ],
-      intervalGraphPointsSection: [
-        Number(scoreDetail.intervalGraphPointsSection01),
-        Number(scoreDetail.intervalGraphPointsSection02),
-        Number(scoreDetail.intervalGraphPointsSection03),
-        Number(scoreDetail.intervalGraphPointsSection04),
-        Number(scoreDetail.intervalGraphPointsSection05),
-        Number(scoreDetail.intervalGraphPointsSection06),
-        Number(scoreDetail.intervalGraphPointsSection07),
-        Number(scoreDetail.intervalGraphPointsSection08),
-        Number(scoreDetail.intervalGraphPointsSection09),
-        Number(scoreDetail.intervalGraphPointsSection10),
-        Number(scoreDetail.intervalGraphPointsSection11),
-        Number(scoreDetail.intervalGraphPointsSection12),
-        Number(scoreDetail.intervalGraphPointsSection13),
-        Number(scoreDetail.intervalGraphPointsSection14),
-        Number(scoreDetail.intervalGraphPointsSection15),
-        Number(scoreDetail.intervalGraphPointsSection16),
-        Number(scoreDetail.intervalGraphPointsSection17),
-        Number(scoreDetail.intervalGraphPointsSection18),
-        Number(scoreDetail.intervalGraphPointsSection19),
-        Number(scoreDetail.intervalGraphPointsSection20),
-        Number(scoreDetail.intervalGraphPointsSection21),
-        Number(scoreDetail.intervalGraphPointsSection22),
-        Number(scoreDetail.intervalGraphPointsSection23),
-        Number(scoreDetail.intervalGraphPointsSection24),
-      ],
-    };
-
-    // Extract keys
+    // 一度DAMデータの全てのキーを取得
     const allKeys = Object.keys(scoreDetail);
 
-    // Known keys
-    const knownKeys = Object.keys(knownFields)
+    // 既存のキーを取得
+    const knownKeys = Object.keys(convertDataDamCommonFields(''))
       .concat(Object.keys(convertDataDamAiFields('')))
       .concat(Object.keys(convertDataDamDxgFields('')))
       .concat(
@@ -150,10 +46,10 @@ export const convertDamScores = (data: any) =>
         ]).flat()
       );
 
-    // Other keys
+    // その他のキーを取得
     const otherKeys = allKeys.filter((key) => !knownKeys.includes(key));
 
-    // Other object
+    // その他のキー・バリューを取得
     const other = otherKeys.reduce(
       (acc, key) => {
         acc[key] = scoreDetail[key];
@@ -163,11 +59,11 @@ export const convertDamScores = (data: any) =>
       {} as Record<string, any>
     );
 
-    // Result object
+    // 最終的に完成されるオブジェクト
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result: any = {
       score: scoring._,
-      ...knownFields,
+      ...convertDataDamCommonFields(scoreDetail),
       other,
     };
 
