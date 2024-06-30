@@ -6,21 +6,35 @@ const url = `${process.env.MONGO_URL}`;
 
 const client = new MongoClient(url, {});
 
+/**
+ * dam-siteのスコアを取得し、DBに保存する関数
+ * @param req Request POSTリクエスト
+ */
 export const damSitePost = async (req: Request, res: Response) => {
   const {
     minPage,
     maxPage,
     scoringAiIds,
   }: { minPage?: number; maxPage?: number; scoringAiIds?: number[] } = req.body;
+
+  // 引数のバリデーション
   if (!minPage || !maxPage || !scoringAiIds) {
     res.status(400).json({ error: 'minPage, maxPage, scoringAiIds are required' });
     return;
   }
 
-  const minPageNumber = Number(minPage) || undefined;
-  const maxPageNumber = Number(maxPage) || undefined;
+  const minPageNum = Number(minPage);
+  const minPageNumber = minPageNum > 0 ? minPageNum : 1;
+  const maxPageNum = Number(maxPage);
+  const maxPageNumber = maxPageNum <= 40 ? maxPageNum : 40;
+
+  if (minPageNumber > maxPageNumber) {
+    res.status(400).json({ error: 'minPage must be less than or equal to maxPage' });
+    return;
+  }
 
   try {
+    // dam-siteのスコアを取得
     const damSiteScoresList = await fetchDamSiteList({
       minPage: minPageNumber,
       maxPage: maxPageNumber,
