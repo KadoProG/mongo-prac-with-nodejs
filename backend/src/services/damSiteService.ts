@@ -5,21 +5,26 @@ import { convertDamScores, convertMeta } from '../utils/convertDamScores';
 
 const cdmCardNo = process.env.CDM_CARD_NO;
 
-const url = 'https://www.clubdam.com/app/damtomo/scoring/GetScoringAiListXML.do';
+const damAiUrl = 'https://www.clubdam.com/app/damtomo/scoring/GetScoringAiListXML.do';
+const damDxgUrl = 'https://www.clubdam.com/app/damtomo/scoring/GetScoringDxgListXML.do';
 
 export const fetchDamSite = async (
-  options: { pageNo?: number; scoringAiId?: number }
+  options: { pageNo?: number; id?: number; type: 'scoringAi' | 'scoringDxg' }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ list: any[]; meta: IMeta }> => {
+  const key = options.type === 'scoringAi' ? 'scoringAiId' : 'scoringDxgId';
   const params = {
     cdmCardNo,
     pageNo: options.pageNo ?? undefined,
-    scoringAiId: options.scoringAiId ?? undefined,
+    [key]: options.id ?? undefined,
     detailFlg: 1,
+    dxgType: options.type === 'scoringDxg' ? 1 : undefined,
   };
 
   try {
-    const response = await axios.get(url, { params });
+    const response = await axios.get(options.type === 'scoringAi' ? damAiUrl : damDxgUrl, {
+      params,
+    });
 
     const data = response.data;
     const resultJson = await convertXmlToJson(data);
@@ -36,21 +41,23 @@ export const fetchDamSite = async (
 export const fetchDamSiteList = async (options: {
   minPage?: number;
   maxPage?: number;
-  scoringAiIds?: number[];
+  ids?: number[];
+  type: 'scoringAi' | 'scoringDxg';
 }) => {
   const resultList = [];
   let pageNo = options.minPage || 1;
   const maxPageNo = options.maxPage || 40;
-  let remainingScoringAiIds: number[] = options.scoringAiIds || [];
+  let remainingIds: number[] = options.ids || [];
+  const key = options.type === 'scoringAi' ? 'scoringAiId' : 'scoringDxgId';
 
-  const currentMaxDamScoringAiId = undefined;
+  const currentMaxId = undefined;
 
   // まずはページ数を指定して取得
   // eslint-disable-next-line no-constant-condition
   while (true) {
     console.log(`pageNo: ${pageNo}のデータを取得します`); // eslint-disable-line no-console
     // eslint-disable-next-line no-await-in-loop
-    const { list } = await fetchDamSite({ pageNo });
+    const { list } = await fetchDamSite({ pageNo, type: options.type });
 
     if (list.length === 0) break;
 
@@ -58,19 +65,19 @@ export const fetchDamSiteList = async (options: {
 
     if (pageNo >= maxPageNo) break;
 
-    const scoringAiIds = list.map((data) => Number(data.scoringAiId));
-    remainingScoringAiIds = remainingScoringAiIds.filter((id) => scoringAiIds.includes(id));
+    const ids = list.map((data) => Number(data[key]));
+    remainingIds = remainingIds.filter((id) => ids.includes(id));
 
-    if (currentMaxDamScoringAiId && scoringAiIds.includes(currentMaxDamScoringAiId)) break;
+    if (currentMaxId && ids.includes(currentMaxId)) break;
 
     pageNo += 1;
   }
 
   // 残りのAiデータを取得
   await Promise.all(
-    remainingScoringAiIds.map(async (scoringAiId) => {
-      console.log(`scoringAiId: ${scoringAiId}のデータを取得します`); // eslint-disable-line no-console
-      const { list } = await fetchDamSite({ scoringAiId });
+    remainingIds.map(async (id) => {
+      console.log(`id: ${id}のデータを取得します`); // eslint-disable-line no-console
+      const { list } = await fetchDamSite({ id, type: options.type });
       resultList.push(...list);
     })
   );

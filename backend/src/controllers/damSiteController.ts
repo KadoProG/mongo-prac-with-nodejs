@@ -44,7 +44,8 @@ export const damSitePost = async (req: Request, res: Response) => {
     const damSiteScoresList = await fetchDamSiteList({
       minPage: minPageNumber,
       maxPage: maxPageNumber,
-      scoringAiIds: ids,
+      ids,
+      type,
     });
 
     await client.connect();
