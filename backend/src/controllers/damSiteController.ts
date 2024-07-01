@@ -51,13 +51,21 @@ export const damSitePost = async (req: Request, res: Response) => {
     const database = client.db(process.env.MONGO_DB);
     const collection = database.collection('karaokeScores');
 
-    const bulkOps = damSiteScoresList.map((data) => ({
-      updateOne: {
-        filter: { scoringAiId: data.scoringAiId },
-        update: { $setOnInsert: data },
-        upsert: true,
-      },
-    }));
+    const bulkOps = damSiteScoresList.map((score) => {
+      const key = type === 'scoringAi' ? 'scoringAiId' : 'scoringDxgId';
+      const keyValue = score[key];
+
+      if (!keyValue) throw new Error('scoringAiId or scoringDxgId is not found');
+
+      return {
+        updateOne: {
+          filter: {
+            [key]: score[key],
+          },
+          update: { $setOnInsert: score },
+        },
+      };
+    });
 
     const result = await collection.bulkWrite(bulkOps);
     await client.close();
