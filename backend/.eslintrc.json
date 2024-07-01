@@ -9,12 +9,10 @@
     "eslint:recommended",
     "airbnb",
     "airbnb-base",
-    "airbnb/hooks",
     "airbnb-typescript",
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@next/next/recommended",
     "prettier"
   ],
   "globals": {
@@ -41,7 +39,7 @@
     }
   },
   "rules": {
-    "no-use-before-define": ["off"],
+    // "no-use-before-define": ["off"],
     "linebreak-style": ["error", "unix"],
     "quotes": [
       "error",
