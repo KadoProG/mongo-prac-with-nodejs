@@ -43,8 +43,6 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-etc": "^2.0.3",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-material-ui": "^1.0.1",
-    "eslint-plugin-mui-unused-classes": "^2.0.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-storybook": "^0.8.0",

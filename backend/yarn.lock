@@ -2479,16 +2479,6 @@ eslint-plugin-jsx-a11y@^6.5.1, eslint-plugin-jsx-a11y@^6.7.1:
     object.entries "^1.1.7"
     object.fromentries "^2.0.7"
 
-eslint-plugin-material-ui@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/eslint-plugin-material-ui/-/eslint-plugin-material-ui-1.0.1.tgz"
-  integrity sha512-COAp5llD9AzOXsrfuqUPaWN2yQPhtb7Wcz+RDX5EVEZrTJwblvDJKEJcU93nnVsjy6Wg5XrSRPiWwmR+IBjehw==
-
-eslint-plugin-mui-unused-classes@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/eslint-plugin-mui-unused-classes/-/eslint-plugin-mui-unused-classes-2.0.2.tgz"
-  integrity sha512-122GRiJP7L2Df5bLKLRj1mIM4ihDbg9K+niPCjZ9L/qIMd77SSwHUvDMm5xUWlWr3fwSe3pKWZjfN6xvdrSv9w==
-
 eslint-plugin-node@^11.1.0:
   version "11.1.0"
   resolved "https://registry.npmjs.org/eslint-plugin-node/-/eslint-plugin-node-11.1.0.tgz"
