@@ -4,10 +4,9 @@
     "es6": true,
     "node": true
   },
-  "plugins": ["@typescript-eslint", "etc", "node"],
+  "plugins": ["@typescript-eslint", "import", "jsx-a11y", "etc", "node", "prettier"],
   "extends": [
     "eslint:recommended",
-    "airbnb",
     "airbnb-base",
     "airbnb-typescript",
     "airbnb-typescript/base",
@@ -39,8 +38,9 @@
     }
   },
   "rules": {
-    // "no-use-before-define": ["off"],
+    "no-use-before-define": ["off"],
     "linebreak-style": ["error", "unix"],
+    "react/jsx-filename-extension": ["off"],
     "quotes": [
       "error",
       "single",
@@ -57,7 +57,7 @@
     "@typescript-eslint/no-unused-vars": "error",
     // 比較演算子の"=="を”＝＝＝”に修正する
     "eqeqeq": 2,
-    "no-console": "warn",
+    "no-console": "error",
     "object-shorthand": "error",
     "arrow-body-style": ["error"],
     "no-else-return": ["error"],
