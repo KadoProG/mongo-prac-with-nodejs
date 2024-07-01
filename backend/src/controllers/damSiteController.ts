@@ -48,10 +48,7 @@ export const damSitePost = async (req: Request, res: Response) => {
       type,
     });
 
-    await client.connect();
-    const database = client.db(process.env.MONGO_DB);
-    const collection = database.collection('karaokeScores');
-
+    // 一括書き込みデータの作成
     const bulkOps = damSiteScoresList.map((score) => {
       const key = type === 'scoringAi' ? 'scoringAiId' : 'scoringDxgId';
       const keyValue = score[key];
@@ -61,12 +58,17 @@ export const damSitePost = async (req: Request, res: Response) => {
       return {
         updateOne: {
           filter: {
-            [key]: score[key],
+            [key]: keyValue,
           },
           update: { $setOnInsert: score },
+          upsert: true,
         },
       };
     });
+
+    await client.connect();
+    const database = client.db(process.env.MONGO_DB);
+    const collection = database.collection('karaokeScores');
 
     const result = await collection.bulkWrite(bulkOps);
     await client.close();
