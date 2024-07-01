@@ -27,9 +27,9 @@ import { convertDataDamDxgFields } from './convertDataDamDxgFields';
  * @returns 変換後のデータ
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const convertDamScores = (data: any) =>
+export const convertDamScores = (data: any): any[] =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data.document.list[0].data.map((d: any) => {
+  data.document.list[0].data?.map((d: any) => {
     const scoring = d.scoring[0];
     const scoreDetail = scoring.$;
 
@@ -85,7 +85,7 @@ export const convertDamScores = (data: any) =>
     }
 
     return result;
-  });
+  }) ?? [];
 
 /**
  * メタデータを変換する
