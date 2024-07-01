@@ -14,12 +14,18 @@ export const damSitePost = async (req: Request, res: Response) => {
   const {
     minPage,
     maxPage,
-    scoringAiIds,
-  }: { minPage?: number; maxPage?: number; scoringAiIds?: number[] } = req.body;
+    ids,
+    type,
+  }: {
+    minPage?: number;
+    maxPage?: number;
+    ids?: number[];
+    type: 'scoringAi' | 'scoringDxg';
+  } = req.body;
 
   // 引数のバリデーション
-  if (!minPage || !maxPage || !scoringAiIds) {
-    res.status(400).json({ error: 'minPage, maxPage, scoringAiIds are required' });
+  if (!minPage || !maxPage || !ids || !['scoringAi', 'scoringDxg'].includes(type)) {
+    res.status(400).json({ error: 'minPage, maxPage, scoringAiIds, scoringDxg are required' });
     return;
   }
 
@@ -38,7 +44,7 @@ export const damSitePost = async (req: Request, res: Response) => {
     const damSiteScoresList = await fetchDamSiteList({
       minPage: minPageNumber,
       maxPage: maxPageNumber,
-      scoringAiIds,
+      scoringAiIds: ids,
     });
 
     await client.connect();
