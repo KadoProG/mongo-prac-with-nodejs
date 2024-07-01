@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId, Sort } from 'mongodb';
 
 const url = `${process.env.MONGO_URL}`;
 
@@ -17,15 +17,19 @@ export const postGet = async (req: Request, res: Response) => {
     const database = client.db(process.env.MONGO_DB);
     const collection = database.collection('karaokeScores');
 
-    const query = {};
+    const filterQuery = {};
 
-    const findCursor = collection.find(query);
+    const sortQuery = { scoringDateTime: 1 } as Sort; // 昇順の場合は1、降順の場合は-1
+
+    const findCursor = collection.find(filterQuery).sort(sortQuery);
+
     const findCursorWithSkip = skip ? findCursor.skip(skip) : findCursor;
     const findCursorWithLimit = perPageNumber
       ? findCursorWithSkip.limit(perPageNumber)
       : findCursorWithSkip;
-    const documents = await findCursorWithLimit.toArray();
-    const total = await collection.countDocuments(query);
+
+    const documents = await findCursorWithLimit.toArray(); // データを取得
+    const total = await collection.countDocuments(filterQuery); // 個数を取得
     res.status(200).json({
       list: documents,
       meta: {
