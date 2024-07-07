@@ -46,7 +46,7 @@ paths:
                     $ref: "#/components/schemas/Meta"
     post:
       summary: カラオケの採点データを追加する
-      description:
+      description: |
         カラオケの採点データを追加します。MongoDBを使用しています。<br />
         新規追加する際は、_id は指定しないでください。
       tags:
@@ -56,7 +56,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: "#/components/schemas/Scores"
       responses:
         "201":
@@ -64,17 +63,23 @@ paths:
   /karaoke/{id}:
     patch:
       summary: カラオケの採点データを更新する
-      description:
+      description: |
         カラオケの採点データを更新します。MongoDBを使用しています。<br />
         更新する際は、`_id` を指定してください（パスパラメータに含める形）。
       tags:
         - karaoke
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: カラオケ採点データのID
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
               $ref: "#/components/schemas/Scores"
       responses:
         "200":
@@ -84,13 +89,21 @@ paths:
       description: カラオケの採点データを削除します。MongoDBを使用しています。
       tags:
         - karaoke
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: カラオケ採点データのID
       responses:
         "204":
           description: A song is deleted
   /dam-site:
     post:
       summary: DAM★トモの情報を取得する
-      description: DAM★トモの情報を取得し、MongoDBに保存します。<br />
+      description: |
+        DAM★トモの情報を取得し、MongoDBに保存します。<br />
         プロパティはすべて必須で、type には "scoringAi" または "scoringDxg" を指定してください。<br />
         minPage, maxPageを指定すると、指定したページ範囲の曲の情報を取得し保存します。最大直近200件まで取得できます。<br />
         200件を超す場合、対象の ids を指定すると、指定した曲の情報のみを取得し保存します。
@@ -101,22 +114,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                minPage:
-                  type: number
-                  example: 1
-                maxPage:
-                  type: number
-                  example: 40
-                ids:
-                  type: array
-                  items:
-                    type: number
-                    example: 1413882
-                type:
-                  type: string
-                  example: "scoringAi"
+              $ref: "#/components/schemas/DamSiteRequest"
       responses:
         "200":
           description: 保存した曲のメタ情報を返す
@@ -153,6 +151,23 @@ components:
         total:
           type: number
           example: 382
+    DamSiteRequest:
+      type: object
+      properties:
+        minPage:
+          type: number
+          example: 1
+        maxPage:
+          type: number
+          example: 40
+        ids:
+          type: array
+          items:
+            type: number
+            example: 1413882
+        type:
+          type: string
+          example: "scoringAi"
 
 tags:
   - name: karaoke
