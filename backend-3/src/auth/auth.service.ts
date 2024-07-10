@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -7,10 +7,14 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
-    @InjectModel('user') private readonly userModel: Model<User>,
+    @InjectModel('user') private userModel: Model<User>,
     private jwtService: JwtService
-  ) {}
+  ) {
+    this.logger.log('AuthService initialized');
+  }
 
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt();
