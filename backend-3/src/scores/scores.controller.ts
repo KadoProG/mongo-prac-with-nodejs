@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateScoreDto } from 'src/dto/create-score.dto';
 import { Score } from 'src/interfaces/score.interface';
 import { ScoresService } from 'src/scores/scores.service';
@@ -7,6 +8,7 @@ import { ScoresService } from 'src/scores/scores.service';
 export class ScoresController {
   constructor(private readonly scoresService: ScoresService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(): Promise<Score[]> {
     return this.scoresService.findAll();

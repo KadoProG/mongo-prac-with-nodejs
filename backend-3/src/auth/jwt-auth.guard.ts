@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 // LocalAuthGuardクラスの作成
 @Injectable()
-export class LocalAuthGuard extends AuthGuard('local') {
+export class JwtAuthGuard extends AuthGuard('local') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const result = (await super.canActivate(context)) as boolean;
     const request = context.switchToHttp().getRequest();
