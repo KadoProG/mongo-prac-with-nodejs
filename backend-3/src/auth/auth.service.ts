@@ -2,7 +2,7 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '../interfaces/user.interface'; // パスを確認
+import { User } from '../interfaces/user.interface';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -24,18 +24,21 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<any> {
     this.logger.log(`Validating user with email: ${email}`);
     const user = await this.userModel.findOne({ email }).select('+password').exec();
-    this.logger.log(`User found: ${user.email}`);
-    this.logger.log(`pass: ${user.password}`);
-    if (user && user.password) {
-      const isMatch = await bcrypt.compare(pass, user.password);
-      if (isMatch) {
-        this.logger.log('Password matched');
-        return user;
+    if (user) {
+      this.logger.log(`User found: ${user.email}`);
+      if (user.password) {
+        const isMatch = await bcrypt.compare(pass, user.password);
+        if (isMatch) {
+          this.logger.log('Password matched');
+          return user;
+        } else {
+          this.logger.warn('Password did not match');
+        }
       } else {
-        this.logger.warn('Password did not match');
+        this.logger.warn('Password is undefined');
       }
     } else {
-      this.logger.warn('User not found or password is undefined');
+      this.logger.warn('User not found');
     }
     return null;
   }

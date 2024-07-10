@@ -2,8 +2,8 @@ import { Injectable, ExecutionContext, UnauthorizedException, Logger } from '@ne
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
-  private readonly logger = new Logger(JwtAuthGuard.name);
+export class LocalAuthGuard extends AuthGuard('local') {
+  private readonly logger = new Logger(LocalAuthGuard.name);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     this.logger.log('Validating request');
@@ -16,7 +16,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
-    this.logger.warn('Invalid token');
-    throw new UnauthorizedException('Invalid token');
+    this.logger.warn('Invalid credentials');
+    throw new UnauthorizedException('Invalid credentials');
   }
 }
