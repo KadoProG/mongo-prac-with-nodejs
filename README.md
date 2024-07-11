@@ -4,7 +4,10 @@ docker-compose ファイルを使用して、mongoDB を立ち上げ、nodejs �
 
 ## 起動方法
 
-`docker-compose up --build -d`
+```shell
+cp .env.example .env
+docker-compose up --build -d
+```
 
 以降は docker デスクトップで制御可能
 
