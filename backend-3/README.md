@@ -1,5 +1,16 @@
 # mongoDB を Nest で
 
+## パス一覧
+
+- `POST` `/user/create` ユーザ作成
+- `GET` `/user` ユーザ一覧
+- `POST` `/auth/login` ログイン
+
+（下記は認証トークン必要）
+
+- `GET` `/scores` スコア取得
+- `POST` `/scores` スコア作成
+
 ---
 
 <p align="center">
