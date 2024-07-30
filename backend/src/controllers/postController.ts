@@ -19,7 +19,7 @@ export const postGet = async (req: Request, res: Response) => {
 
     const filterQuery = {};
 
-    const sortQuery = { scoringDateTime: 1 } as Sort; // 昇順の場合は1、降順の場合は-1
+    const sortQuery = { scoringDateTime: -1 } as Sort; // 昇順の場合は1、降順の場合は-1
 
     const findCursor = collection.find(filterQuery).sort(sortQuery);
 
@@ -35,6 +35,55 @@ export const postGet = async (req: Request, res: Response) => {
       meta: {
         currentPage: pageNumber,
         perPage: perPageNumber,
+        total,
+      },
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({ error: err.toString() });
+  } finally {
+    await client.close();
+  }
+};
+
+export const postIdsGet = async (req: Request, res: Response) => {
+  try {
+    await client.connect();
+    const database = client.db(process.env.MONGO_DB);
+    const collection = database.collection('karaokeScores');
+
+    const filterQuery = {
+      $or: [{ scoringAiId: { $exists: true } }, { scoringDxgId: { $exists: true } }],
+    };
+
+    const sortQuery = { scoringDateTime: 1 } as Sort; // 昇順の場合は1、降順の場合は-1
+
+    const findCursor = collection.find(filterQuery).sort(sortQuery);
+
+    const findCursorWithSkip = findCursor;
+    const findCursorWithLimit = findCursorWithSkip;
+
+    const documents = await findCursorWithLimit.toArray(); // データを取得
+    const total = await collection.countDocuments(filterQuery); // 個数を取得
+
+    const scoringAiIds: string[] = [];
+    const scoringDxgIds: string[] = [];
+
+    documents.forEach((doc) => {
+      if (doc.scoringAiId) {
+        scoringAiIds.push(doc.scoringAiId);
+      }
+      if (doc.scoringDxgId) {
+        scoringDxgIds.push(doc.scoringDxgId);
+      }
+    });
+
+    res.status(200).json({
+      scoringAiIds,
+      scoringDxgIds,
+      meta: {
+        scoringAiIdsTotal: scoringAiIds.length,
+        scoringDxgIdsTotal: scoringDxgIds.length,
         total,
       },
     });
